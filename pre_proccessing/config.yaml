@@ -1,0 +1,17 @@
+gatk: "gatk"
+picard: "picard"
+bwa: "bwa"
+
+reference: " "
+
+known_sites:
+  - "https://storage.googleapis.com/gatk-best-practices/somatic-hg38/b37_bundle/dbsnp_146.hg38.vcf.gz"
+  - "https://storage.googleapis.com/gatk-best-practices/somatic-hg38/b37_bundle/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz"
+
+output_dir: "/output_preprocess"
+resources_dir: "resources"
+
+threads: 16
+platform: "ILLUMINA"
+library: "WGS"
+
