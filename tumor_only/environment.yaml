@@ -1,7 +1,7 @@
-name: pre-proccess-gatk
+name: gatk
 channels:
   - bioconda
-  - confa-forge
+  - conda-forge
 dependencies:
   - python=3.10
   - gatk4=4.6.2.0
