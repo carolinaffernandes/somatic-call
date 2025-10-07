@@ -18,7 +18,7 @@ usage() {
     echo "Parâmetros opcionais:"
     echo "  -i  Diretório contendo arquivos VCF (.vcf.gz)."
     echo "      Se usado, o script processará automaticamente todos os VCFs encontrados no diretório."
-    echo "  -d  Cobertura mínima (DP). Default: 10"
+    echo "  -d  Cobertura mínima (DP)"
     echo "  -t  Tipo de variante: snps, indels ou both. Default: both"
     echo
     echo "Exemplo usando diretório:"
