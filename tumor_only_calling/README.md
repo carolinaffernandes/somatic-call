@@ -87,9 +87,9 @@ O script `run_pipeline.sh`:
 
 \- Envia jobs SLURM para cada amostra
 
-\- Dentro de cada job, roda `mutect2.sh` por cromossomo (em paralelo)
+\- Dentro de cada job, roda `mutect2_chr.sh` por cromossomo (em paralelo)
 
-\- Em seguida, chama `filtermutectcalls.sh`
+\- Em seguida, chama `filtermutectcalls_chr`
 
 \- Por fim, o `merge_vcfs.sh` junta todos os resultados em um único arquivo por amostra.
 
@@ -104,8 +104,9 @@ Os scripts utilizam dependências (`--dependency=afterok:<JOBID>`) para garantir
 Cada etapa do pipeline pode ser executada separadamente:
 
 ``` bash
-bash mutect2.sh   # Chamada de variantes
-bash filtermutectcalls.sh  # Filtragem
+bash download_ref.sh	# Download de arquivos de referência
+bash mutect2_chr.sh   # Chamada de variantes
+bash filtermutectcalls_chr.sh  # Filtragem
 bash merge_vcfs.sh  # Junção final
 ```
 
