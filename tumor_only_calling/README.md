@@ -29,7 +29,6 @@ project/
     ├── filtermutectcalls_chr.sh
     ├── merge_vcf.sh
     └── mutect2_chr.sh
-
 ```
 
 ------------------------------------------------------------------------
@@ -42,10 +41,6 @@ project/
 conda env create -f environment_variant-calling.yml
 ```
 
-### Conferência do `config.yaml`
-
-Defina os caminhos e parâmetros principais do pipeline
-
 ### Arquivo `samplesheet.tsv`
 
 O arquivo deve conter **duas colunas separadas por tabulação**:
@@ -56,6 +51,8 @@ Sample01    /path/tumor.bam
 Sample02    /path/tumor.bam
 ```
 
+> Você pode criar um diretório `samples/` para isso.
+
 ### Download dos arquivos de referência
 
 > Para esta etapa, você precisa ter o `gsutil` configurado (via `gcloud auth login` ou `gsutil config`).
@@ -65,7 +62,7 @@ Os arquivos para o genoma de referência serão transferidos para o diretório r
 Executar:
 
 ```         
-scripts/download_ref.sh
+bash scripts/download_ref.sh
 ```
 
 ------------------------------------------------------------------------
@@ -104,7 +101,7 @@ Os scripts utilizam dependências (`--dependency=afterok:<JOBID>`) para garantir
 Cada etapa do pipeline pode ser executada separadamente:
 
 ``` bash
-bash download_ref.sh	# Download de arquivos de referência
+bash download_ref.sh    # Download de arquivos de referência
 bash mutect2_chr.sh   # Chamada de variantes
 bash filtermutectcalls_chr.sh  # Filtragem
 bash merge_vcfs.sh  # Junção final
@@ -139,3 +136,9 @@ results/
 │       └── Sample01_merged.vcf.gz
 ```
 
+## 6. Referências
+
+-   [GATK Mutect2 Best Practices](https://gatk.broadinstitute.org/hc/en-us/articles/360035889991) – Guia oficial de uso do Mutect2 para chamadas somáticas.
+-   [Picard MergeVCFs](https://broadinstitute.github.io/picard/command-line-overview.html#MergeVcfs) – Documentação do Picard para junção de arquivos VCF.
+-   [GATK Resource Bundle](https://console.cloud.google.com/storage/browser/gatk-best-practices) – Pacote de referência, germline-resource e Panel of Normals (PON) para hg38.
+-   [GCP Public Data – Broad References](https://console.cloud.google.com/storage/browser/gcp-public-data--broad-references) – Genoma de referência hg38.

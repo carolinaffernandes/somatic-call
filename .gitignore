@@ -1,6 +1,0 @@
-tumor_only/results/
-tumor_only/tmp/
-pre_proccessing/tmp/
-logs/
-slurm-*.out
-slurm-*.err
