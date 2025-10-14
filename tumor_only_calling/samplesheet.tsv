@@ -1,0 +1,5 @@
+sample	bam_path
+M3	/scratch/14196861/projetos/Jose_XPV/bamdir/UDB-387-M3.mm2.sortdup.bqsr.bam
+M4	/scratch/14196861/projetos/Jose_XPV/bamdir/UDB-388-M4.bwa.sortdup.bqsr.bam
+M5	/scratch/14196861/projetos/Jose_XPV/bamdir/UDB-389-M5.bwa.sortdup.bqsr.bam
+M6	/scratch/14196861/projetos/Jose_XPV/bamdir/UDB-390-M6.bwa.sortdup.bqsr.bam
