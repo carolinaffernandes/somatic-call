@@ -83,13 +83,13 @@ sbatch run_pipeline.sh
 
 O script `run_pipeline.sh`:
 
-\- Lê `samples.tsv`
+\- Lê `samplesheet.tsv`
 
 \- Envia jobs SLURM para cada amostra
 
 \- Dentro de cada job, roda `mutect2_chr.sh` por cromossomo (em paralelo)
 
-\- Em seguida, chama `filtermutectcalls_chr`
+\- Em seguida, chama `filtermutectcalls_chr.sh`
 
 \- Por fim, o `merge_vcfs.sh` junta todos os resultados em um único arquivo por amostra.
 
