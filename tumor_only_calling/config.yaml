@@ -1,8 +1,8 @@
 output_dir: "results/Mutect2"
 filtered_dir: "results/FilterMutectCalls"
-tmp_dir: "/scratch/14196861/projetos/Jose_XPV/tmp"
-reference: "/scratch/14196861/ref/hg38/hg38_v0_Homo_sapiens_assembly38.fasta"
-germline_resource: "/scratch/14196861/ref/hg38/af-only-gnomad.hg38.vcf.gz"
-pon: "/scratch/14196861/ref/hg38/1000g_pon.hg38.vcf.gz" 
+tmp_dir: "tmp"
+reference: "ref/hg38/hg38_v0_Homo_sapiens_assembly38.fasta"
+germline_resource: "ref/hg38/af-only-gnomad.hg38.vcf.gz"
+pon: "ref/hg38/1000g_pon.hg38.vcf.gz"
 singularity_img: "/temporario2/apps/gnu/gatk/gatk_latest.simg"
 max_jobs: 20
