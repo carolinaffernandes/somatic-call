@@ -41,6 +41,10 @@ project/
 conda env create -f environment_variant-calling.yml
 ```
 
+### Conferência do `config.yaml`
+
+Defina os caminhos e parâmetros principais do pipeline
+
 ### Arquivo `samplesheet.tsv`
 
 O arquivo deve conter **duas colunas separadas por tabulação**:
@@ -51,8 +55,6 @@ Sample01    /path/tumor.bam
 Sample02    /path/tumor.bam
 ```
 
-> Você pode criar um diretório `samples/` para isso.
-
 ### Download dos arquivos de referência
 
 > Para esta etapa, você precisa ter o `gsutil` configurado (via `gcloud auth login` ou `gsutil config`).
@@ -62,7 +64,7 @@ Os arquivos para o genoma de referência serão transferidos para o diretório r
 Executar:
 
 ```         
-bash scripts/download_ref.sh
+scripts/download_ref.sh
 ```
 
 ------------------------------------------------------------------------
@@ -80,13 +82,13 @@ sbatch run_pipeline.sh
 
 O script `run_pipeline.sh`:
 
-\- Lê `samplesheet.tsv`
+\- Lê `samples.tsv`
 
 \- Envia jobs SLURM para cada amostra
 
-\- Dentro de cada job, roda `mutect2_chr.sh` por cromossomo (em paralelo)
+\- Dentro de cada job, roda `mutect2.sh` por cromossomo (em paralelo)
 
-\- Em seguida, chama `filtermutectcalls_chr.sh`
+\- Em seguida, chama `filtermutectcalls.sh`
 
 \- Por fim, o `merge_vcfs.sh` junta todos os resultados em um único arquivo por amostra.
 
@@ -101,9 +103,8 @@ Os scripts utilizam dependências (`--dependency=afterok:<JOBID>`) para garantir
 Cada etapa do pipeline pode ser executada separadamente:
 
 ``` bash
-bash download_ref.sh    # Download de arquivos de referência
-bash mutect2_chr.sh   # Chamada de variantes
-bash filtermutectcalls_chr.sh  # Filtragem
+bash mutect2.sh   # Chamada de variantes
+bash filtermutectcalls.sh  # Filtragem
 bash merge_vcfs.sh  # Junção final
 ```
 
@@ -114,8 +115,16 @@ Isso facilita o reprocessamento parcial sem repetir todo o fluxo.
 ## 4. Observações Importantes
 
 -   Todos os diretórios de trabalho (`output_dir`, `temp_dir`) devem existir e ser acessíveis.\
+
 -   O pipeline não utiliza `--bind` no Singularity, pois assume que `/scratch` e `/temporario2` já estão montados.\
+
 -   As imagens Docker devem estar disponíveis localmente ou acessíveis via cache.
+
+-   Este pipeline é **idempotente**, ou seja:
+
+    -   Se um job for interrompido, você pode re-submeter o pipeline sem perder resultados já completos.
+    -   Arquivos de saída existentes (`*.vcf.gz` completos) não serão sobrescritos.
+    -   O log por amostra e cromossomo ajuda a identificar onde o pipeline parou
 
 ------------------------------------------------------------------------
 
@@ -135,10 +144,3 @@ results/
 │   └── merged/
 │       └── Sample01_merged.vcf.gz
 ```
-
-## 6. Referências
-
--   [GATK Mutect2 Best Practices](https://gatk.broadinstitute.org/hc/en-us/articles/360035889991) – Guia oficial de uso do Mutect2 para chamadas somáticas.
--   [Picard MergeVCFs](https://broadinstitute.github.io/picard/command-line-overview.html#MergeVcfs) – Documentação do Picard para junção de arquivos VCF.
--   [GATK Resource Bundle](https://console.cloud.google.com/storage/browser/gatk-best-practices) – Pacote de referência, germline-resource e Panel of Normals (PON) para hg38.
--   [GCP Public Data – Broad References](https://console.cloud.google.com/storage/browser/gcp-public-data--broad-references) – Genoma de referência hg38.

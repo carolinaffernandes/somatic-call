@@ -17,7 +17,3 @@ gsutil cp gs://gatk-best-practices/somatic-hg38/af-only-gnomad.hg38.vcf.gz* "$RE
 echo ">> Downloads concluídos com sucesso!"
 echo "Arquivos salvos em: $REF_DIR"
 
-# === Observação ===
-# Os arquivos acima são baixados automaticamente executando:
-#   bash scripts/download_references.sh
-# Fonte oficial: https://gatk.broadinstitute.org/
