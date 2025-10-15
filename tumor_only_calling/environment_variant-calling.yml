@@ -17,6 +17,4 @@ dependencies:
   - tabix=1.11
   - bedtools=2.31.1
   - parallel=20240722
-  - pip
-  - pip:
-      - PyYAML
+  - pyyaml
