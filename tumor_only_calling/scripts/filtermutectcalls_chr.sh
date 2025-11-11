@@ -11,7 +11,14 @@ set -euo pipefail
 CONFIG="$PWD/config.yaml"
 TASK_LIST="$PWD/task_list.txt"
 
-get_yaml() { python3 get_yaml.py "$CONFIG" "$1"; }
+DEBUG=0
+if [[ "${1:-}" == "--debug" ]]; then
+    DEBUG=1
+    set -x
+    echo "=== DEBUG MODE ENABLED ==="
+fi
+
+get_yaml() { python3 "$PWD/get_yaml.py" "$CONFIG" "$1"; }
 
 OUTPUT_DIR=$(get_yaml output_dir)
 FILTERED_DIR=$(get_yaml filtered_dir)
@@ -29,29 +36,31 @@ LOG_FILE="${LOG_DIR}/${SAMPLE}_FilterMutectCalls_${CHROM}.log"
 
 mkdir -p "$FILTERED_DIR" "$LOG_DIR"
 
-# verifica se já filtrado
+echo "[$(date)] Running FilterMutectCalls for $SAMPLE $CHROM" | tee -a "$LOG_FILE"
+echo "Input: $MUTECT2_OUT" | tee -a "$LOG_FILE"
+echo "Output: $FILTERED_OUT" | tee -a "$LOG_FILE"
+
+# === Idempotência ===
 if [[ -s "$FILTERED_OUT" ]]; then
-  echo "[$(date)] SKIP: ${FILTERED_OUT} already exists — skipping FilterMutectCalls." | tee -a "$LOG_FILE"
-  exit 0
+    echo "[$(date)] SKIP: $FILTERED_OUT already exists" | tee -a "$LOG_FILE"
+    exit 0
 fi
 
-# verifica se o VCF de entrada existe e está pronto
 if [[ ! -s "$MUTECT2_OUT" ]]; then
-  echo "[$(date)] ERROR: input VCF ${MUTECT2_OUT} not found or empty — cannot run FilterMutectCalls." | tee -a "$LOG_FILE" >&2
-  exit 2
+    echo "[$(date)] ERROR: input VCF missing $MUTECT2_OUT" | tee -a "$LOG_FILE" >&2
+    exit 2
 fi
 
-echo ">> $SAMPLE - FilterMutectCalls - $CHROM" | tee -a "$LOG_FILE"
-singularity exec "$SINGULARITY_IMG" gatk FilterMutectCalls \
-    -R "$REFERENCE" \
-    -V "$MUTECT2_OUT" \
-    -O "$FILTERED_OUT" \
-    &>> "$LOG_FILE"
+# Executa
+CMD="singularity exec $SINGULARITY_IMG gatk FilterMutectCalls -R $REFERENCE -V $MUTECT2_OUT -O $FILTERED_OUT"
+echo "Command: $CMD" | tee -a "$LOG_FILE"
+eval "$CMD" &>> "$LOG_FILE"
 
 if [[ $? -ne 0 ]]; then
-    echo "[$(date)] ERRO no FilterMutectCalls para $SAMPLE - $CHROM" | tee -a "$LOG_FILE" >&2
+    echo "[$(date)] ERROR in FilterMutectCalls for $SAMPLE $CHROM" | tee -a "$LOG_FILE" >&2
     exit 1
 fi
 
 echo "DONE FILTERMUTECTCALLS" >> "$LOG_FILE"
-echo "[$(date)] FilterMutectCalls finished for ${SAMPLE}_${CHROM}" | tee -a "$LOG_FILE"
+echo "[$(date)] FilterMutectCalls finished for $SAMPLE $CHROM" | tee -a "$LOG_FILE"
+
