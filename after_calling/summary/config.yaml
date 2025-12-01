@@ -1,0 +1,6 @@
+qc_pipeline:
+  input_dir: "/scratch/14196861/projetos/gemeos_xpv/results/Anotados_Exclusivos"
+  output_dir: "/scratch/14196861/projetos/gemeos_xpv/results/summary_exclusivos"
+
+  dp_field: "DP"     # campo de cobertura
+  af_field: "AF"     # campo de frequência alélica
