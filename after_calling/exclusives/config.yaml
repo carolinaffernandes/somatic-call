@@ -1,0 +1,16 @@
+global_arguments:
+  annovar_path: "/scratch/14196861/annovar"
+  annovar_reference: "/scratch/14196861/annovar/humandb"
+
+  # tipo var: snps | indels | both
+  variant_type: "indels"
+
+paths:
+  filtered_dir: "/scratch/14196861/projetos/gemeos_xpv/results/Merged"
+  exclusive_dir: "/scratch/14196861/projetos/gemeos_xpv/results/Exclusivos"
+  annovar_dir: "/scratch/14196861/projetos/gemeos_xpv/results/Anotados_Exclusivos"
+  annovar_total: "/scratch/14196861/projetos/gemeos_xpv/results/Anotados_Totais"
+
+samples:
+  sample_list: "/scratch/14196861/projetos/gemeos_xpv/results/Merged/sample_list.txt"
+
