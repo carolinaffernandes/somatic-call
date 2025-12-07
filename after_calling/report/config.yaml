@@ -1,0 +1,12 @@
+annotation_pipeline:
+  samplesheet: "/scratch/14196861/projetos/gemeos_xpv/report/samples.tsv"
+  output_dir: "/scratch/14196861/projetos/gemeos_xpv/results/VariantReport"
+  html_filename: "Relatorio_exclusivas_gemeosXP.html"
+  report_title: "Relatório de Variantes Exclusivas - Gêmeos XPV"
+  color_func: "mediumseagreen"  
+  color_exonic: "cornflowerblue"
+
+#dados autoria:
+
+  author: "Maria Carolina F. / DNA repair lab"
+  date: "05/12/2025"
