@@ -1,0 +1,4 @@
+M3	/scratch/14196861/projetos/gemeos_xpv/results/Merged/M3_merged.vcf.gz
+M6	/scratch/14196861/projetos/gemeos_xpv/results/Merged/M6_merged.vcf.gz
+M4	/scratch/14196861/projetos/gemeos_xpv/results/Merged/M4_merged.vcf.gz
+M5	/scratch/14196861/projetos/gemeos_xpv/results/Merged/M5_merged.vcf.gz
