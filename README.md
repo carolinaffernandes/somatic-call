@@ -1,4 +1,4 @@
-### - Construindo a Pipeline:
+### ⌛ - Construindo a Pipeline:
 
 Para utilizar este repositório, recomenda-se o uso do nosso arquivo de definição (`.def`) para a construção de um container **Apptainer/Singularity** otimizado para análise de variantes somáticas.
 
