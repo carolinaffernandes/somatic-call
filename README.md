@@ -67,6 +67,8 @@ singularity exec gatk_4.6.1.sif gatk Mutect2 \
     -O somatic.vcf.gz
 ```
 
+> Nos scripts disponíveis neste repositório, basta adicionar o *path,* da sua instalação no 'singularity_img' do config.yaml
+
 Este container foi desenvolvido aderindo aos princípios *FAIR,* servindo como um objeto digital persistente que encapsula o ambiente computacional exato utilizado nas análises.
 
 -   **Arquivo de Definição:** `gatk_versionado.def`
