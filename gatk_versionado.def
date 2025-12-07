@@ -1,0 +1,94 @@
+Bootstrap: docker
+From: broadinstitute/gatk:4.6.1.0
+
+%post
+    # 1. Limpeza preventiva (caso o /tmp esteja sujo do host)
+    rm -rf /tmp/build
+    mkdir -p /tmp/build
+
+    # 2. Instalação de dependências
+    apt-get update && apt-get install -y \
+        build-essential \
+        wget \
+        unzip \
+        zlib1g-dev \
+        libbz2-dev \
+        liblzma-dev \
+        libncurses5-dev \
+        libcurl4-gnutls-dev \
+        libssl-dev
+
+    # Definição de Variáveis
+    export CC=/usr/bin/gcc
+    export CXX=/usr/bin/g++
+    export BWA_VER=0.7.17
+    export HTS_VER=1.21
+    
+    # Flags completas para o BWA: Otimização + Threads + Correção GCC novo (-fcommon)
+    export BWA_FLAGS="-g -Wall -Wno-unused-function -O2 -DHAVE_PTHREAD -DUSE_MALLOC_WRAPPERS -fcommon"
+
+    cd /tmp/build
+
+    # 3. Instalação do BWA (Com make clean e flags completas)
+    echo "Instalando BWA ${BWA_VER}..."
+    wget https://github.com/lh3/bwa/releases/download/v${BWA_VER}/bwa-${BWA_VER}.tar.bz2
+    tar -xjf bwa-${BWA_VER}.tar.bz2
+    cd bwa-${BWA_VER}
+    
+    # IMPORTANTE: make clean garante que removemos os arquivos velhos
+    make clean
+    make CC=$CC CFLAGS="${BWA_FLAGS}"
+    
+    cp bwa /usr/local/bin/
+    cd /tmp/build
+
+    # 4. Instalação do HTSlib, Samtools e Bcftools
+    
+    # --- HTSlib ---
+    echo "Instalando HTSlib ${HTS_VER}..."
+    wget https://github.com/samtools/htslib/releases/download/${HTS_VER}/htslib-${HTS_VER}.tar.bz2
+    tar -xjf htslib-${HTS_VER}.tar.bz2
+    cd htslib-${HTS_VER}
+    ./configure --prefix=/usr/local CC=$CC
+    make -j4
+    make install
+    cd /tmp/build
+
+    # --- Samtools ---
+    echo "Instalando Samtools ${HTS_VER}..."
+    wget https://github.com/samtools/samtools/releases/download/${HTS_VER}/samtools-${HTS_VER}.tar.bz2
+    tar -xjf samtools-${HTS_VER}.tar.bz2
+    cd samtools-${HTS_VER}
+    ./configure --prefix=/usr/local --with-htslib=system CC=$CC
+    make -j4
+    make install
+    cd /tmp/build
+
+    # --- Bcftools ---
+    echo "Instalando Bcftools ${HTS_VER}..."
+    wget https://github.com/samtools/bcftools/releases/download/${HTS_VER}/bcftools-${HTS_VER}.tar.bz2
+    tar -xjf bcftools-${HTS_VER}.tar.bz2
+    cd bcftools-${HTS_VER}
+    ./configure --prefix=/usr/local --with-htslib=system CC=$CC
+    make -j4
+    make install
+    
+    # 5. Limpeza Final
+    cd /
+    rm -rf /tmp/build
+    apt-get remove -y build-essential
+    apt-get autoremove -y
+    apt-get clean
+    rm -rf /var/lib/apt/lists/*
+
+%environment
+    export LC_ALL=C
+    export PATH=/usr/local/bin:$PATH
+
+%labels
+    Author Maria Carolina F. C. Santos - dec. 2025
+    GATK_Version 4.6.1.0
+    BWA_Version 0.7.17
+    Samtools_Version 1.21
+    Bcftools_Version 1.21
+    Description Receita com GATK (com Picard), bwa, samtools e bcftools
