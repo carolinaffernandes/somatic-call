@@ -1,6 +1,6 @@
 ### ⌛ - Construindo a Pipeline:
 
-Para utilizar este repositório, recomenda-se o uso do nosso arquivo de definição (`.def`) para a construção de um container **Apptainer/Singularity** otimizado para análise de variantes somáticas.
+Para utilizar este repositório, recomenda-se o uso do arquivo de definição (`.def`) para a construção de um container **Apptainer/Singularity** otimizado para análise de variantes somáticas.
 
 O ambiente foi desenhado para seguir as **GATK Best Practices**, garantindo reprodutibilidade e portabilidade entre estações de trabalho locais e ambientes de computação de alto desempenho (HPC).
 
@@ -60,7 +60,7 @@ singularity exec gatk_4.6.1.sif bwa mem \
 Exemplo: Chamada de Variantes (Mutect2)
 
 ``` bash
-singularity exec gatk_final.sif gatk Mutect2 \
+singularity exec gatk_4.6.1.sif gatk Mutect2 \
     -R ref.fa \
     -I tumor.bam \
     -I normal.bam \
