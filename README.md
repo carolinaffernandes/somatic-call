@@ -41,7 +41,7 @@ Recomenda-se construir a imagem localmente para evitar problemas de permissão e
 2.  Execute o build da imagem .sif:
 
 ``` bash
-sudo singularity build gatk_4.6.1.sif gatk_versionado.def 
+sudo singularity build gatk_4.6.1.sif gatk_4.6.1.def 
 ```
 
 > Transfira o arquivo `gatk_4.6.1.sif` gerado para o seu cluster/HPC via SCP ou RSYNC.
