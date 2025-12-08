@@ -35,7 +35,7 @@ project/
 
 ## 1. Configuração
 
-### Controle do ambiente com conda
+### Caso não esteja utilizando o container, usar controle do ambiente com conda
 
 ```         
 conda env create -f environment_variant-calling.yml
