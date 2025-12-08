@@ -2,49 +2,60 @@ Bootstrap: docker
 From: broadinstitute/gatk:4.6.1.0
 
 %post
-    # 1. Limpeza preventiva (caso o /tmp esteja sujo do host)
+    # 1. Limpeza inicial
     rm -rf /tmp/build
     mkdir -p /tmp/build
 
-    # 2. Instalação de dependências
+    # 2. Dependências do sistema (para compilar BWA/Samtools)
     apt-get update && apt-get install -y \
         build-essential \
         wget \
-        unzip \
-        zlib1g-dev \
-        libbz2-dev \
-        liblzma-dev \
         libncurses5-dev \
         libcurl4-gnutls-dev \
-        libssl-dev
+        libssl-dev \
+        zlib1g-dev \
+        libbz2-dev \
+        liblzma-dev
 
-    # Definição de Variáveis
+    # Variáveis
     export CC=/usr/bin/gcc
     export CXX=/usr/bin/g++
     export BWA_VER=0.7.17
     export HTS_VER=1.21
-    
-    # Flags completas para o BWA: Otimização + Threads + Correção GCC novo (-fcommon)
     export BWA_FLAGS="-g -Wall -Wno-unused-function -O2 -DHAVE_PTHREAD -DUSE_MALLOC_WRAPPERS -fcommon"
 
+    # =========================================================================
+    # PARTE 1: INSTALAÇÃO VIA CONDA (QC e Utils)
+    # =========================================================================
+    echo "Instalando ferramentas via Conda..."
+    
+    # Removemos vcftools e bedtools.
+    # Mantemos apenas o essencial para QC e automação.
+    conda install -c bioconda -c conda-forge -y \
+        fastp=0.23.4 \
+        multiqc=1.25.1 \
+        parallel=20230722 \
+        pyyaml=6.0
+
+    conda clean -afy
+
+    # =========================================================================
+    # PARTE 2: COMPILAÇÃO MANUAL (Core Tools: BWA, Samtools, Bcftools)
+    # =========================================================================
     cd /tmp/build
 
-    # 3. Instalação do BWA (Com make clean e flags completas)
+    # --- BWA v0.7.17 ---
     echo "Instalando BWA ${BWA_VER}..."
     wget https://github.com/lh3/bwa/releases/download/v${BWA_VER}/bwa-${BWA_VER}.tar.bz2
     tar -xjf bwa-${BWA_VER}.tar.bz2
     cd bwa-${BWA_VER}
-    
-    # IMPORTANTE: make clean garante que removemos os arquivos velhos
     make clean
     make CC=$CC CFLAGS="${BWA_FLAGS}"
-    
     cp bwa /usr/local/bin/
     cd /tmp/build
 
-    # 4. Instalação do HTSlib, Samtools e Bcftools
-    
-    # --- HTSlib ---
+    # --- HTSlib / Samtools / Bcftools v1.21 ---
+    # HTSlib (Dependência)
     echo "Instalando HTSlib ${HTS_VER}..."
     wget https://github.com/samtools/htslib/releases/download/${HTS_VER}/htslib-${HTS_VER}.tar.bz2
     tar -xjf htslib-${HTS_VER}.tar.bz2
@@ -54,7 +65,7 @@ From: broadinstitute/gatk:4.6.1.0
     make install
     cd /tmp/build
 
-    # --- Samtools ---
+    # Samtools
     echo "Instalando Samtools ${HTS_VER}..."
     wget https://github.com/samtools/samtools/releases/download/${HTS_VER}/samtools-${HTS_VER}.tar.bz2
     tar -xjf samtools-${HTS_VER}.tar.bz2
@@ -64,7 +75,7 @@ From: broadinstitute/gatk:4.6.1.0
     make install
     cd /tmp/build
 
-    # --- Bcftools ---
+    # Bcftools (O substituto moderno do vcftools)
     echo "Instalando Bcftools ${HTS_VER}..."
     wget https://github.com/samtools/bcftools/releases/download/${HTS_VER}/bcftools-${HTS_VER}.tar.bz2
     tar -xjf bcftools-${HTS_VER}.tar.bz2
@@ -73,7 +84,9 @@ From: broadinstitute/gatk:4.6.1.0
     make -j4
     make install
     
-    # 5. Limpeza Final
+    # =========================================================================
+    # LIMPEZA FINAL
+    # =========================================================================
     cd /
     rm -rf /tmp/build
     apt-get remove -y build-essential
@@ -86,9 +99,6 @@ From: broadinstitute/gatk:4.6.1.0
     export PATH=/usr/local/bin:$PATH
 
 %labels
-    Author Maria Carolina F. C. Santos - dec. 2025
-    GATK_Version 4.6.1.0
-    BWA_Version 0.7.17
-    Samtools_Version 1.21
-    Bcftools_Version 1.21
-    Description Receita com GATK (com Picard), bwa, samtools e bcftools
+    Author Maria Carolina F. C. Santos
+    Description Pipeline Somático Híbrido (GATK, BWA, Fastp)
+    Tools GATK 4.6, BWA 0.7.17, Samtools 1.21, Bcftools 1.21, Fastp 0.23, MultiQC 1.25.1
