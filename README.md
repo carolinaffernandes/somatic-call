@@ -4,7 +4,7 @@ Para utilizar este repositório, recomenda-se o uso do arquivo de definição (`
 
 O ambiente foi desenhado para seguir as **GATK Best Practices**, garantindo reprodutibilidade e portabilidade entre estações de trabalho locais e ambientes de computação de alto desempenho (HPC).
 
-Este ambiente será utilizado principalmente para as etapas de `pre-processing` e `tumor-only-calling`, mas também ressalta-se que, caso seja para uso de módulos específicos, também disponibilizam-se YMLs para configurar ambientes conda.
+> Ressalta-se que, para uso de módulos específicos, também disponibilizam-se YMLs para configurar ambientes conda em `tumor-only-calling`.
 
 #### Sobre a receita `(.def)`:
 
