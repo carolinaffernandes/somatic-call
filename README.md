@@ -17,6 +17,9 @@ Todas as ferramentas foram compiladas a partir do código-fonte ou obtidas de im
 | **Samtools** | 1.21      | Compilado (HTSlib 1.21)                |
 | **Bcftools** | 1.21      | Compilado (HTSlib 1.21)                |
 | **Picard**   | (Incluso) | Integrado ao GATK 4                    |
+| **Fastp**    | 0.23      | Instalação com Conda (GATK)            |
+| **MultiQC**  | 1.25.1    | Instalação com Conda (GATK)            |
+
 
 #### Pré-requisitos
 
@@ -71,7 +74,7 @@ singularity exec gatk_4.6.1.sif gatk Mutect2 \
 
 Este container foi desenvolvido aderindo aos princípios *FAIR,* servindo como um objeto digital persistente que encapsula o ambiente computacional exato utilizado nas análises.
 
--   **Arquivo de Definição:** `gatk_versionado.def`
+-   **Arquivo de Definição:** `gatk_4.6.1.def`
 
 -   **Imagem Imutável:** `gatk_4.6.1.sif`
 
