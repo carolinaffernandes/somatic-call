@@ -1,8 +1,8 @@
-# Pipeline de Pré-processamento de Exoma (WES) 🧬
+## Pipeline de Pré-processamento de Exoma (WES)
 
 Este diretório contém os scripts para automação do pré-processamento de dados de sequenciamento de exoma (WES), seguindo as **GATK Best Practices**. O pipeline converte arquivos brutos **FastQ** em arquivos **BAM prontos para análise** (Analysis-Ready BAMs), adequados para chamada de variantes somáticas (Mutect2).
 
-## 📋 Visão Geral do Fluxo
+### Visão Geral do Fluxo
 
 O pipeline executa os seguintes passos sequenciais para cada amostra:
 
@@ -12,14 +12,14 @@ O pipeline executa os seguintes passos sequenciais para cada amostra:
 4.  **Base Quality Score Recalibration (BQSR - GATK):** * `BaseRecalibrator`: Calcula erros sistemáticos nos scores de qualidade.
     * `ApplyBQSR`: Aplica a correção no BAM.
 
-## 🛠️ Pré-requisitos
+### Pré-requisitos
 
 * **Ambiente:** Cluster HPC com gerenciador de tarefas **SLURM**.
 * **Container:** Imagem Singularity com GATK 4+ e BWA instalados (arquivo `.sif`).
 * **Referências:** * Genoma de Referência (FASTA + índices `.fai`, `.dict`, `.bwt`, etc.).
     * Banco de dados de variantes conhecidas (dbSNP, Mills/Indels) para o BQSR.
 
-## 📂 Estrutura de Arquivos
+### Estrutura de Arquivos
 
 ```text
 preprocessing/
@@ -30,6 +30,7 @@ preprocessing/
 │   └── wrapper_preproc.sh     # Script "Operário" (Executa BWA/GATK)
 ├── logs/                      # Logs de execução (Output/Error)
 └── README.md                  # Este arquivo
+```
 
 ## Observação:
 
