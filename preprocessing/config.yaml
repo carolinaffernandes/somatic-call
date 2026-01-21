@@ -1,0 +1,13 @@
+input_fastqs_dir: "fastq-filtered/"
+results_dir: "results"
+logs_dir: "logs"
+
+singularity_image: "../container/gatk_4.6.1.sif"
+reference_genome: "../ref/hg38/hg38_v0_Homo_sapiens_assembly38.fasta"
+known_sites_snp: "../ref/hg38/hg38_v0_Homo_sapiens_assembly38.dbsnp138.vcf"
+known_sites_indels: "../ref/hg38/hg38_v0_Homo_sapiens_assembly38.known_indels.vcf.gz"
+
+slurm:
+  time: "192:00:00"
+  cpus_per_task: 8
+  mem: "16G"
